@@ -102,7 +102,7 @@ Follow the code in the **`dmit2015-faces-firebase-demo`** folder.
 
 In this lesson, we replace the in-memory Student service with Firebase Realtime Database while keeping the existing `StudentService` interface.
 
----
+
 
 #### 1. Create a Firebase Project
 
@@ -114,7 +114,7 @@ In this lesson, we replace the in-memory Student service with Firebase Realtime 
 
 4. Complete the project setup.
 
----
+
 
 #### 2. Create a Realtime Database
 
@@ -128,7 +128,7 @@ In this lesson, we replace the in-memory Student service with Firebase Realtime 
 
 This URL will be used to connect the application to Firebase.
 
----
+
 
 #### 3. Test Firebase from IntelliJ
 
@@ -153,7 +153,7 @@ Create the HTTP request file using the IntelliJ template.
 
 Run the generated HTTP requests to test the connection between IntelliJ and Firebase Realtime Database.
 
----
+
 
 #### 4. Create the Firebase Service
 
@@ -181,7 +181,7 @@ FirebaseStudentService
 
 while preserving the existing service interface.
 
----
+
 
 #### 5. Configure MicroProfile Config
 
@@ -211,7 +211,7 @@ firebase.rtdb.base.url=https://your-project-id-default-rtdb.firebaseio.com/
 
 Replace the example URL with your actual Firebase Realtime Database URL.
 
----
+
 
 #### 6. Update `StudentCrudView`
 
@@ -232,7 +232,7 @@ Use the CDI name:
 Replace the previous service injection/configuration with the Firebase service configuration demonstrated in class.
 
 
----
+
 
 #### 7. Verify Firebase CRUD Operations
 
@@ -253,6 +253,6 @@ Finally, restart the application and confirm that the Student data still exists.
 
 Unlike `MemoryStudentService`, Firebase stores the data outside the running application, so the data remains after the application restarts.
 
----
+
 
 **Topics:** Firebase Realtime Database, Firebase REST API, HTTP requests, CRUD operations, service interfaces, Firebase service implementation, MicroProfile Config, CDI, JSF backing beans, and persistent data.
