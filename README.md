@@ -8,11 +8,11 @@ This repository contains course work that is **not submitted for marks**, includ
 
 Clone this repository to keep track of your work and easily share code with the instructor.
 
-## Week 1
+# Week 1
 
 Follow the code in the **`dmit2015-javase-demo`** folder.
 
-## Week 2
+# Week 2
 
 Follow the code in the **`dmit2015-faces-demo`** folder.
 
@@ -47,7 +47,7 @@ Follow the code in the **`dmit2015-faces-demo`** folder.
 
 **Topics:** Collections and data tables, JSF navigation, action methods, implicit navigation, redirects with `faces-redirect=true`, JSF lifecycle phases, and validation behavior.
 
-## Week 3–4
+# Week 3–4
 
 Follow the code in the **`dmit2015-faces-firebase-demo`** folder.
 
