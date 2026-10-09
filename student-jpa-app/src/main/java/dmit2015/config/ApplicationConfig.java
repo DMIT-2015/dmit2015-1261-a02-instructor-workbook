@@ -26,54 +26,6 @@ import jakarta.enterprise.context.ApplicationScoped;
                 user = "user2015",
                 password = "Password2015"),
 
-//	@DataSourceDefinition(
-//		name="java:app/datasources/MSSQLServerDS",
-//		className="com.microsoft.sqlserver.jdbc.SQLServerDataSource",
-//		url="jdbc:sqlserver://localhost;databaseName=DMIT2015CourseDB;TrustServerCertificate=true",
-//		user="user2015",
-//		password="Password2015"),
-//
-//	@DataSourceDefinition(
-//		name="java:app/datasources/OracleDS",
-//		className="oracle.jdbc.datasource.impl.OracleDataSource",
-//		url="jdbc:oracle:thin:@localhost:1521/FREEPDB1",
-//		user="user2015",
-//		password="Password2015"),
-//
-//	@DataSourceDefinition(
-//		name="java:app/datasources/OracleHrDS",
-//		className="oracle.jdbc.xa.client.OracleXADataSource",
-//		url="jdbc:oracle:thin:@localhost:1521/FREEPDB1",
-//		user="HR",
-//		password="Password2015"),
-//
-//	@DataSourceDefinition(
-//		name="java:app/datasources/OracleCoDS",
-//		className="oracle.jdbc.xa.client.OracleXADataSource",
-//		url="jdbc:oracle:thin:@localhost:1521/FREEPDB1",
-//		user="CO",
-//		password="Password2015"),
-//
-//	@DataSourceDefinition(
-//		name="java:app/datasources/PostgreSQLDS",
-//		className="org.postgresql.xa.PGXADataSource",
-//		url="jdbc:postgresql://localhost/DMIT2015CourseDB",
-//		user="user2015",
-//		password="Password2015"),
-//
-//	@DataSourceDefinition(
-//		name="java:app/datasources/MySQLDS",
-//		className="com.mysql.cj.jdbc.MysqlXADataSource",
-//		url="jdbc:mysql://localhost/DMIT2015CourseDB",
-//		user="user2015",
-//		password="Password2015"),
-//
-//	@DataSourceDefinition(
-//		name="java:app/datasources/MariaDBDS",
-//		className="org.mariadb.jdbc.MariaDbDataSource",
-//		url="jdbc:mariadb://localhost/DMIT2015CourseDB",
-//		user="user2015",
-//		password="Password2015"),
 
 })
 
