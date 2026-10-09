@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<arquillian xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://jboss.org/schema/arquillian"
+            xsi:schemaLocation="http://jboss.org/schema/arquillian  https://jboss.org/schema/arquillian/arquillian_1_0.xsd">
+
+    <engine>
+        <property name="deploymentExportPath">target/</property>
+    </engine>
+
+    <container qualifier="wildfly-managed" default="true">
+        <configuration>
+            <property name="jbossHome">/home/user2015/jdk/server/wildfly-40.0.0.Final</property>
+            <property name="javaHome">/home/user2015/.sdkman/candidates/java/current</property>
+
+            <!-- To attach a remote debugger to Arquillian from IntelliJ IDEA
+             1. Uncomment the javaVmArguments property below
+             2. Set a breakpoint in your source code
+             3. Run the test method and when you see the message "Listening for transport dt_socket at address: 8787" on the output area
+                 1. From the main menu, choose `Run | Attach to Process`
+                 2. IntelliJ IDEA will show the list of running local processes. Select the process with the `jboss-modules.jar (8787)` name to attach to.
+             4. The Debug window will open a when breakpoint is reached
+            -->
+            <!--            <property name="javaVmArguments">-Xrunjdwp:transport=dt_socket,address=8787,server=y,suspend=y</property>-->
+        </configuration>
+    </container>
+    <!-- To run your integration test with a bootable jar file:
+        1) Comment out or remove the dependency for wildfly-arquillian-container-managed
+            and add the following dependency for wildfly-arquillian-container-bootable
+                <dependency>
+                    <groupId>org.wildfly.arquillian</groupId>
+                    <artifactId>wildfly-arquillian-container-bootable</artifactId>
+                    <version>5.1.0.Final</version>
+                    <scope>test</scope>
+                </dependency>
+        2) Edit pom.xml and verify wildfly-maven-plugin <configuration> is confiured to generate a bootable jar file:
+                <bootable-jar>true</bootable-jar>
+        3) Open a Terminal in IntelliJ and run the following command to build a bootable jar file:
+                mvn clean package wildfly:package
+        4) Change [replace-this-with-your-bootable-jar-filename] with the name of the bootable jar
+            filename that is located in the target sub-directory.
+            You can use the command `ls -l target` to view a list of files inside the target directory.
+        -->
+    <container qualifier="wildfly-bootable-jar" default="false">
+        <configuration>
+            <property name="jarFile">target/[replace-this-with-your-bootable-jar-filename]</property>
+        </configuration>
+    </container>
+
+</arquillian>
