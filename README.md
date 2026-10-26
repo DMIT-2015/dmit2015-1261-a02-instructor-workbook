@@ -72,6 +72,17 @@ Follow the code and lesson instructions in the dmit2015-1261-jakarta-data-hr-dem
 
 ---
 
+## Week 8 – Jakarta Security
+
+### Lesson 20: Jakarta Security and OpenID Connect (OIDC) with Keycloak
+
+Follow the code and lesson instructions in the dmit2015-jakarta-security-movie-manager folder.
+
+
+
+
+---
+
 ## How to Use This Repository
 
 1. Find the week and lesson you want to review.
