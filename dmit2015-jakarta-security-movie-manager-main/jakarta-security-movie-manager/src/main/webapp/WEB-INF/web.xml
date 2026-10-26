@@ -44,4 +44,52 @@
         </auth-constraint>
     </security-constraint>
     -->
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>CanViewMovie</web-resource-name>
+            <url-pattern>/movies/index.xhtml</url-pattern>
+            <url-pattern>/movies/index</url-pattern>
+            <url-pattern>/movies/details.xhtml</url-pattern>
+            <url-pattern>/movies/details</url-pattern>
+
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>Sales </role-name>
+            <role-name>Administration </role-name>
+        </auth-constraint>
+
+    </security-constraint>
+
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>CanCreateAndEditMovies</web-resource-name>
+            <url-pattern>movies/create.xhtml</url-pattern>
+            <url-pattern>movies/create</url-pattern>
+            <url-pattern>movies/edit.xhtml</url-pattern>
+            <url-pattern>movies/edit</url-pattern>
+
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>Sales </role-name>
+
+        </auth-constraint>
+    </security-constraint>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>CanDeleteMovies</web-resource-name>
+            <url-pattern>movies/delete.xhtml</url-pattern>
+            <url-pattern>movies/delete</url-pattern>
+
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>Adminstration </role-name>
+
+        </auth-constraint>
+    </security-constraint>
+
+
+
 </web-app>
