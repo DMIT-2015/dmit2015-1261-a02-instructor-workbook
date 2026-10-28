@@ -77,6 +77,7 @@ Follow the code and lesson instructions in the dmit2015-1261-jakarta-data-hr-dem
 ### Lesson 20: Jakarta Security and OpenID Connect (OIDC) with Keycloak
 
 Follow the code and lesson instructions in the dmit2015-jakarta-security-movie-manager folder.
+We have added two .md files. Follow security_setup_steps.md for configuring Jakarta security to your device and to connect a project and follow configuring_HTTPS_steps.md for Configuring HTTPS in WildFly.
 
 
 
