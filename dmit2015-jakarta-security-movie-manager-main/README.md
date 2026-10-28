@@ -41,8 +41,10 @@ The remaining setup instructions and code examples are available in the provided
 
 #### Part 1 – Start Windows Server 2022
 
-Download and extract the provided Windows Server 2022 VM.
 
+
+
+Download and extract the provided [Windows Server 2022 VM](https://naitca.sharepoint.com/teams/DMITStudents/Course%20Materials/Forms/AllItems.aspx?viewid=06f819cc%2Da415%2D4b03%2D8230%2D58e9dcc2a2a5&d=w93560bc0fedd4f928780fdd151ade3e4&csf=1&CID=2f8bfea6%2D50e1%2D46c9%2Da4ca%2D88215ffa4ed2&FolderCTID=0x012000F30D0DFEF4B7F24CADFAC2C27E9B263F&ovuser=5c98fb47%2Dd3b9%2D4649%2D9d94%2Df88cbdd9729c%2CRAFATI%40nait%2Eca&id=%2Fteams%2FDMITStudents%2FCourse%20Materials%2FDMIT2015%20%2D%20Enterprise%20Application%20Development%2F1261%2FDMIT2015%2D1261%2DWindows2022%2DServer%2E7z&parent=%2Fteams%2FDMITStudents%2FCourse%20Materials%2FDMIT2015%20%2D%20Enterprise%20Application%20Development%2F1261)
 Start the VM and sign in using the provided course credentials.
 
 Open PowerShell:
@@ -86,7 +88,7 @@ Test the connection again from Ubuntu after changing the IP address.
 Fork and clone the provided repository:
 
 ```text
-DMIT2015 Jakarta Security Movie Manager
+DMIT2015 Jakarta Security Movie Manager : https://github.com/DMIT-2015/dmit2015-jakarta-security-movie-manager
 ```
 
 Open the project in IntelliJ IDEA.
@@ -280,6 +282,7 @@ Keycloak
 | Client ID | `Jakarta-security-movie-manager` |
 | Client authentication | On |
 
+Client ID is your project name.
 Continue through the client configuration.
 
 **Valid Redirect URIs:**
@@ -298,7 +301,7 @@ https://localhost:8443/*
 
 Save the client.
 
-**Add Client-Scope Mappers**
+#### Add Client-Scope Mappers
 
 Add the predefined mappers:
 
@@ -309,6 +312,27 @@ upn
 
 - `groups` provides group information, such as Sales.
 - `upn` provides the user's principal name.
+
+**Steps:**
+
+1. Open **Clients** in Keycloak.
+2. Select your client:
+
+   ```text
+   Jakarta-security-movie-manager (or whaterever your client name you created)
+   ```
+
+3. Open the **Client scopes** tab.
+4. Click the dedicated client scope:
+
+   ```text
+   Jakarta-security-movie-manager-dedicated
+   ```
+
+5. Open **Mappers**.
+6. Click **Add mapper predefind → By configuration**.
+7. Add a mapper with the following settings: groups, upn (Search by groups, upn in search tab and check mark it)
+
 
 **What it does:** Registers Movie Manager as an OIDC client so Keycloak can authenticate users and redirect them back to the application.
 
@@ -328,7 +352,7 @@ Create:
 src/main/resources/META-INF/microprofile-config.properties
 ```
 
-Paste the following configuration from your notes:
+Paste the following configuration code:
 
 ```properties
 # Keycloak OpenID Connect configuration
@@ -344,7 +368,6 @@ keycloak.oidc.clientSecret=fgVkcFbrFsMwGbbCl6d6HduEGMyYekIjHPQarVzlNuGsvw6HigURh
 keycloak.oidc.redirectURI=http://localhost:8080/callback
 ```
 
-**Important:** The `providerURI` above is preserved exactly as written in your notes, but it uses `d2015-realm` rather than `dmit2015-realm`. Check the actual issuer URL in Keycloak before running the application.
 
 If the realm is `dmit2015-realm`, the provider URI should normally be:
 
@@ -385,7 +408,6 @@ Clients
 
 **What it does:** Stores the Keycloak OIDC settings that Movie Manager uses to connect to the identity provider.
 
-> Do not publish an active client secret in a public GitHub repository. Use a private configuration or environment variable for the actual secret.
 
 ---
 
@@ -412,7 +434,68 @@ OidcConfig.java
 
 **Where to find the code:**
 
-Copy the complete `OidcConfig.java` code from **Step 6** of the provided document.
+Copy the complete `OidcConfig.java` code from **Step 6** of the provided document or paste this code:
+
+```propertiesimport jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.Initialized;
+import jakarta.enterprise.event.Observes;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.security.enterprise.authentication.mechanism.http.OpenIdAuthenticationMechanismDefinition;
+import lombok.Getter;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+
+/**
+ * This class assumes that the Microprofile Config dependency has been added to the project.
+ * <pre>@code{
+ *
+ * <dependency>
+ *     <groupId>org.eclipse.microprofile.config</groupId>
+ *     <artifactId>microprofile-config-api</artifactId>
+ *     <version>3.1</version>
+ * </dependency>
+ *
+ * }</pre>
+ */
+
+@OpenIdAuthenticationMechanismDefinition(
+		providerURI = "${oidcConfig.oidcProviderURI}",
+		clientId = "${oidcConfig.oidcClientId}",
+		clientSecret = "${oidcConfig.oidcClientSecret}",
+		redirectURI = "${oidcConfig.oidcRedirectURI}",
+//		redirectToOriginalResource = true,
+		jwksReadTimeout = 5000,
+		jwksConnectTimeout = 5000
+)
+
+@Named("oidcConfig")
+@ApplicationScoped
+@Getter
+public class OidcConfig {
+
+	@Inject
+	@ConfigProperty(name = "keycloak.oidc.providerURI")
+	private String oidcProviderURI;
+
+	@Inject
+	@ConfigProperty(name = "keycloak.oidc.clientId")
+	private String oidcClientId;
+
+	@Inject
+	@ConfigProperty(name = "keycloak.oidc.clientSecret")
+	private String oidcClientSecret;
+
+	@Inject
+	@ConfigProperty(name = "keycloak.oidc.redirectURI")
+	private String oidcRedirectURI;
+
+	public void initialize(@Observes @Initialized(ApplicationScoped.class) Object event) {
+
+    }
+}
+```
+
+
 
 The class reads the Keycloak configuration from:
 
@@ -447,42 +530,42 @@ CallbackServlet.java
 
 **Where to find the code:**
 
-Copy the complete `CallbackServlet.java` code and imports from **Step 7** of the provided document.
+Copy the complete `CallbackServlet.java` code and imports from **Step 7** of the provided document or paste this code:
 
 **Main Code:**
 
 ```java
+import jakarta.inject.Inject;
+import jakarta.security.enterprise.authentication.mechanism.http.openid.OpenIdConstant;
+import jakarta.security.enterprise.identitystore.openid.OpenIdContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+
+import java.io.IOException;
+import java.util.Optional;
+
 @WebServlet("/callback")
 public class CallbackServlet extends HttpServlet {
-
     @Inject
     private OpenIdContext _oidContext;
 
     @Override
-    protected void doGet(
-            HttpServletRequest request,
-            HttpServletResponse response)
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         if (_oidContext != null) {
-
-            Optional<String> originalRequest =
-                _oidContext.getStoredValue(
-                    request,
-                    response,
-                    OpenIdConstant.ORIGINAL_REQUEST
-                );
-
-            String originalRequestString =
-                originalRequest.orElseThrow();
-
+            Optional<String> originalRequest = _oidContext.getStoredValue(request, response, OpenIdConstant.ORIGINAL_REQUEST);
+            String originalRequestString = originalRequest.orElseThrow();
             response.sendRedirect(originalRequestString);
         }
+
     }
 }
-```
 
-Use the complete imports from the provided course example.
+```
 
 **What it does:** Redirects the user back to the originally requested page after successful Keycloak login.
 
@@ -511,7 +594,72 @@ OidcLogout.java
 
 **Where to find the code:**
 
-Copy the complete `OidcLogout.java` code from **Step 8** of the provided document.
+Copy the complete `OidcLogout.java` code from **Step 8** of the provided document or paste this code:
+
+
+
+```java
+import jakarta.enterprise.context.RequestScoped;
+import jakarta.inject.Inject;
+import jakarta.inject.Named;
+import jakarta.security.enterprise.identitystore.openid.OpenIdContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MultivaluedHashMap;
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.omnifaces.util.Messages;
+
+@Named
+@RequestScoped
+public class OidcLogout {
+
+    @Inject
+    private HttpServletRequest request;
+
+    @Inject
+    private OpenIdContext _openIdContext;
+
+    @Inject
+    @ConfigProperty(name = "keycloak.oidc.providerURI")
+    private String oidcProviderURI;
+
+    @Inject
+    @ConfigProperty(name = "keycloak.oidc.clientId")
+    private String oidcClientId;
+
+    @Inject
+    @ConfigProperty(name = "keycloak.oidc.clientSecret")
+    private String oidcClientSecret;
+
+    public String submit() throws ServletException {
+        final String logoutUrl = String.format("%s/protocol/openid-connect/logout", oidcProviderURI);
+        MultivaluedMap<String, String> formData = new MultivaluedHashMap<>();
+        formData.add("refresh_token", _openIdContext.getRefreshToken().orElseThrow().getToken());
+        formData.add("client_id", oidcClientId);
+        formData.add("client_secret", oidcClientSecret);
+        try (var restClient = ClientBuilder.newClient();
+             Response httpResponse = restClient
+                     .target(logoutUrl)
+                     .request(MediaType.APPLICATION_FORM_URLENCODED_TYPE)
+                     .post(Entity.form(formData))
+        ) {
+            if (httpResponse.getStatusInfo().getFamily() != Response.Status.Family.SUCCESSFUL) {
+                Messages.addGlobalError("Logout failed with status %s", httpResponse.getStatus());
+            }
+        }
+
+        request.getSession().invalidate();
+        return "/index?faces-redirect=true";
+    }
+}
+
+```
+
 
 **What it does:** Handles logout from Movie Manager and the required Keycloak OIDC logout process.
 
@@ -629,9 +777,6 @@ Create:
 wildfly-scripts/configure-elytron.cli
 ```
 
-**Where to find the code:**
-
-Copy the WildFly CLI script from **Step 2** of the provided document.
 
 **Code:**
 
