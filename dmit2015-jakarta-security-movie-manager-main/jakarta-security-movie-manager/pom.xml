@@ -290,7 +290,13 @@
                     <debugSuspend>false</debugSuspend>
 
                     <!--TODO: Add <scripts> to execute commands from a CLI script to enable one-way HTTPS and to configure Elytron subsystem for Jakarta Security-->
+                    <scripts>
+                        <script>
+                            ./wildfly-scripts/configure-elytron.cli
 
+                        </script>
+                        <script>./wildfly-scripts/enable-oneway-https.cli</script>
+                    </scripts>
 
                     <javaOpts>
                         <javaOpt>-Xmx1024m</javaOpt>

@@ -15,6 +15,18 @@
         <param-value>true</param-value>
     </context-param>
 
+    <security-constraint>
+        <display-name>Use HTTPS only</display-name>
+
+        <web-resource-collection>
+            <web-resource-name>sslResources</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
     <!-- Keep empty input fields as null instead of as empty strings in the model. -->
     <context-param>
         <param-name>jakarta.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</param-name>
@@ -92,5 +104,10 @@
             <role-name>Administration</role-name>
         </auth-constraint>
     </security-constraint>
+
+    <error-page>
+        <error-code>403</error-code>
+        <location>/WEB-INF/errors/403.xhtml</location>
+    </error-page>
 
 </web-app>
