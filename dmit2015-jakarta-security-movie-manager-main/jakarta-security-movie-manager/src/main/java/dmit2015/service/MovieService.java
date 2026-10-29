@@ -21,6 +21,11 @@ public class MovieService {
     private MovieRepository movieRepository;
 
     public void addMovie(Movie movie) {
+
+        if(!securityContext.isCallerInRole("Sales")){
+            throw new RuntimeException("Access denied, Only sales can create movies");
+        }
+
         LocalDateTime now = LocalDateTime.now();
 
         movie.setCreateTime(now);
@@ -34,17 +39,76 @@ public class MovieService {
     }
 
     public void updateMovie(Movie movie) {
+
+        if (!securityContext.isCallerInRole("Sales")) {
+            throw new RuntimeException(
+                    "Access denied. Only Sales can edit movies."
+            );
+        }
+
+        if (movie == null || movie.getId() == null) {
+            throw new RuntimeException("Invalid movie.");
+        }
+
+        Movie storedMovie = movieRepository
+                .findOptionalById(movie.getId())
+                .orElseThrow(() ->
+                        new RuntimeException("Movie not found.")
+                );
+
+        String username =
+                securityContext.getCallerPrincipal().getName();
+
+        if (!username.equals(storedMovie.getUsername())) {
+            throw new RuntimeException(
+                    "Access denied. You cannot edit this movie."
+            );
+        }
+
+        movie.setUsername(storedMovie.getUsername());
+        movie.setCreateTime(storedMovie.getCreateTime());
         movie.setUpdateTime(LocalDateTime.now());
 
         movieRepository.update(movie);
     }
+
+
+
+
+
+
 
     public void deleteMovie(Movie movie) {
         movieRepository.delete(movie);
     }
 
     public Optional<Movie> findMovieById(Long movieId) {
-        return movieRepository.findOptionalById(movieId);
+
+        boolean isAdmin = securityContext.isCallerInRole("Administration");
+
+        boolean isSales = securityContext.isCallerInRole("Sales");
+
+        if(!isAdmin && !isSales){
+            throw  new RuntimeException("Access Denied");
+        }
+
+        if(movieId==null){
+            return  Optional.empty();
+        }
+
+        Optional<Movie> result = movieRepository.findOptionalById(movieId);
+
+        if(result.isPresent() && !isAdmin){
+
+            String username= securityContext.getCallerPrincipal().getName();
+            if (!username.equals(result.get().getUsername())){
+                throw  new RuntimeException("Access denied, not your movie");
+            }
+        }
+
+        return result;
+
+
     }
 
     public List<Movie> getAllMovies() {
