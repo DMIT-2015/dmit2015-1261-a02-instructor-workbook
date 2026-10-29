@@ -75,10 +75,10 @@ Follow the code and lesson instructions in the dmit2015-1261-jakarta-data-hr-dem
 ## Week 8 – Jakarta Security
 
 ### Lesson 20: Jakarta Security and OpenID Connect (OIDC) with Keycloak (follow 1.security_setup_steps.md)
-### Lesson 21: Multi-User RBAC and Jakarta Security Configuration (follow 2.configuring_HTTPS_steps.md, 3.multiuser.md)
+### Lesson 21: Multi-User RBAC and Jakarta Security Configuration (follow 2.configuring_HTTPS_steps.md, 3.multiuser.md, 4.Service-Layer-Security.md)
 
 Follow the code and lesson instructions in the dmit2015-jakarta-security-movie-manager folder.
-We have added two .md files. Follow 1.security_setup_steps.md for configuring Jakarta security to your device and to connect a project. follow 2.configuring_HTTPS_steps.md for Configuring HTTPS in WildFly. follow 3.multiuser.md to apply Multi-User Data Ownership.
+We have added two .md files. Follow 1.security_setup_steps.md for configuring Jakarta security to your device and to connect a project. follow 2.configuring_HTTPS_steps.md for Configuring HTTPS in WildFly. follow 3.multiuser.md to apply Multi-User Data Ownership and 4.Service-Layer-Security.md.
 
 
 
