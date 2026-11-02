@@ -1,0 +1,36 @@
+### Create a new entity
+POST http://localhost:8090/restapi/todos
+Content-Type: application/json
+
+{
+  "task": "Test Rest APi Endpoints",
+  "done": "false"
+
+}
+
+### GET All entity from REST API endpoint
+GET http://localhost:8090/restapi/todos
+
+### GET One entity from REST API endpoint
+GET http://localhost:8090/restapi/todos/4
+
+### UPDATE entity at the REST API endpoint - will replace all properties with the properties in the request body
+PUT http://localhost:8090/restapi/todos/4
+Content-Type: application/json
+
+{ "id": 4,
+  "task": "updated",
+  "done": "true"
+
+}
+
+### DELETE entity at the REST API endpoint
+DELETE http://localhost:8090/restapi/todos/4
+
+### Update specific properties of the entity at the REST API endpoint
+PATCH http://localhost:8090/restapi/todos/primaryKeyValue
+Content-Type: application/json
+
+{
+  "propertyName": "propertyValue"
+}
