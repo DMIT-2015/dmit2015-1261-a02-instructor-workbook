@@ -86,6 +86,9 @@ We have added two .md files. Follow 1.security_setup_steps.md for configuring Ja
 ## Week 9 – Jakarta Restful web
 
 
+Follow the code and lesson instructions in the dmit2015-jakarta-rest-todo-demo-main folder. Inside you will find two project both has multiple readmes with code and explanation.
+
+
 ## How to Use This Repository
 
 1. Find the week and lesson you want to review.
