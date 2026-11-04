@@ -102,15 +102,11 @@ import dmit2015.restclient.TodoItemMpRestClient;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
-import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-
-import java.util.List;
-import java.util.Optional;
 
 @Named("currentMpRestClientTodoItemService")
 @ApplicationScoped
-public class MpRestClientTodoItemService implements TodoItemService {
+public class MpRestClientTodoItemService {
 
     @Inject
     @RestClient

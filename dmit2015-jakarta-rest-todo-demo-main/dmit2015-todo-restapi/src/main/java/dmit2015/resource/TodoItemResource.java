@@ -19,7 +19,7 @@ import java.net.URI;
  * perform CRUD operations on Jakarta Persistence entity.
  */
 @ApplicationScoped
-@Path("todos")                    // All methods of this class are associated this URL path
+@Path("todos-entity")                    // All methods of this class are associated this URL path
 @Consumes(MediaType.APPLICATION_JSON)    // All methods this class accept only JSON format data
 @Produces(MediaType.APPLICATION_JSON)    // All methods returns data that has been converted to JSON format
 public class TodoItemResource {

@@ -204,6 +204,7 @@ At this point, before error handling is added, `TodoItemMpRestClient.java` shoul
 ```java
 package dmit2015.restclient;
 
+import dmit2015.model.TodoItem;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
