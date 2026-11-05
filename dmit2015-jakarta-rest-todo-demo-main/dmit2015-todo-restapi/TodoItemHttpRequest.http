@@ -3,7 +3,7 @@ POST http://localhost:8090/restapi/todos
 Content-Type: application/json
 
 {
-  "task": "Test Rest APi Endpoints",
+  "task": "tesing now",
   "done": "false"
 
 }

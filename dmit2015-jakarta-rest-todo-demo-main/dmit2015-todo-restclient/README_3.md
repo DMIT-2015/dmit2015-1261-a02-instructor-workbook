@@ -54,7 +54,7 @@ We will encounters a missing layout-template path after generating the page.
 
 In the starter project, the layout is located at:
 
-`src/main/webapp/WEB-INF/layout.xhtml`
+`src/main/webapp/WEB-INF/faces-templates/layout.xhtml`
 
 But the generated CRUD page expects:
 
