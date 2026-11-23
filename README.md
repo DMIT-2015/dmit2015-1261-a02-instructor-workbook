@@ -91,7 +91,7 @@ Follow the code and lesson instructions in the dmit2015-jakarta-rest-todo-demo-m
 
 ## Week 11 – JWT rest client
 
-Follow the code and lesson instructions in the dmit2015-microprofile-jwt-demo-main folder. Inside you will find three project both has multiple readmes with code and explanation.
+Follow the code and lesson instructions in the dmit2015-microprofile-jwt-demo-main https://github.com/DMIT-2015/dmit2015-microprofile-jwt-demo folder. Inside you will find three project both has multiple readmes with code and explanation.
 
 
 ## How to Use This Repository
