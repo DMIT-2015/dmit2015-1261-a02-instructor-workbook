@@ -10,9 +10,11 @@ Content-Type: application/json
 
 ### GET All entity from REST API endpoint
 GET http://localhost:8090/restapi/students
+Authorization: Bearer {{user1AccessToken}}
 
 ### GET One entity from REST API endpoint
-GET http://localhost:8090/restapi/students/11
+GET http://localhost:8090/restapi/students/1
+Authorization: Bearer {{user1AccessToken}}
 
 ### UPDATE entity at the REST API endpoint - will replace all properties with the properties in the request body
 PUT http://localhost:8090/restapi/students/11
@@ -27,4 +29,5 @@ Content-Type: application/json
 }
 ### DELETE entity at the REST API endpoint
 DELETE http://localhost:8090/restapi/students/11
+Authorization: Bearer {{user2AccessToken}}
 

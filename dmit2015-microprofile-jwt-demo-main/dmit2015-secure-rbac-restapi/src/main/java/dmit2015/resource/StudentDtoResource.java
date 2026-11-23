@@ -5,6 +5,7 @@ import dmit2015.entity.Student;
 import dmit2015.dto.StudentDto;
 import dmit2015.mapper.StudentMapper;
 import dmit2015.repository.StudentRepository;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.OptimisticLockException;
@@ -29,6 +30,7 @@ public class StudentDtoResource {
     @Inject
     private StudentRepository studentRepository;
 
+   @RolesAllowed({"Sales", "Shipping"})
     @GET    // This method only accepts HTTP GET requests.
     public Response findAllStudentsStudents() {
         return Response.ok(
@@ -40,6 +42,7 @@ public class StudentDtoResource {
         ).build();
     }
 
+    @RolesAllowed({"Sales", "Shipping"})
     @Path("{id}")
     @GET    // This method only accepts HTTP GET requests.
     public Response findStudentByIdStudentById(@PathParam("id") Long id) {
@@ -50,6 +53,7 @@ public class StudentDtoResource {
         return Response.ok(dto).build();
     }
 
+    @RolesAllowed({"Sales", "Shipping"})
     @POST    // This method only accepts HTTP POST requests.
     public Response createStudentStudent(StudentDto dto, @Context UriInfo uriInfo) {
         Student newStudent = StudentMapper.INSTANCE.toEntity(dto);
@@ -86,6 +90,7 @@ public class StudentDtoResource {
                 .build();
     }
 
+    @RolesAllowed({"Sales", "Shipping"})
     @PUT            // This method only accepts HTTP PUT requests.
     @Path("{id}")    // This method accepts a path parameter and gives it a name of id
     public Response updateStudentStudent(@PathParam("id") Long id, StudentDto dto) {
@@ -137,6 +142,8 @@ public class StudentDtoResource {
         return Response.ok(updatedDto).build();
     }
 
+
+    @RolesAllowed({"Administration"})
     @DELETE            // This method only accepts HTTP DELETE requests.
     @Path("{id}")    // This method accepts a path parameter and gives it a name of id
     public Response deleteStudentStudent(@PathParam("id") Long id) {
