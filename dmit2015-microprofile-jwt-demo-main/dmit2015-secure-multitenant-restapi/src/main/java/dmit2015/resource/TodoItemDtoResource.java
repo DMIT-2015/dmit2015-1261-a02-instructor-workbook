@@ -12,6 +12,10 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
+import org.eclipse.microprofile.jwt.Claim;
+import org.eclipse.microprofile.jwt.ClaimValue;
+import org.eclipse.microprofile.jwt.Claims;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import java.net.URI;
 import java.util.Objects;
@@ -25,6 +29,12 @@ import java.util.stream.Collectors;
 @Produces(MediaType.APPLICATION_JSON)	// All methods returns data that has been converted to JSON format
 public class TodoItemDtoResource {
 
+    @Inject
+    @Claim(standard = Claims.upn)
+    private ClaimValue<Optional<String>> optionalUsername;
+
+    @Inject
+    private JsonWebToken jwt;
     @Inject
     private UriInfo uriInfo;
 
@@ -149,5 +159,22 @@ public class TodoItemDtoResource {
 //    private TodoItem mapFromDto(TodoItemDto dto) {
 //        return new TodoItem(dto.getId(), dto.getName(), dto.isComplete());
 //    }
+    private String getAuthenticatedUsername() {
+        return optionalUsername.getValue()
+            .orElseThrow(() ->
+                    new ForbiddenException("Username claim is required."));
+    }
 
+
+    private void checkOwnership(TodoItem todoItem){
+        String username= getAuthenticatedUsername();
+        if(!username.equals(todoItem.getUsername())){
+            throw new ForbiddenException("you cannot access others data");
+        }
+    }
+    private void checkReadAccess(TodoItem todoItem) {
+        if (!jwt.getGroups().contains("Administration")) {
+            checkOwnership(todoItem);
+        }
+    }
 }

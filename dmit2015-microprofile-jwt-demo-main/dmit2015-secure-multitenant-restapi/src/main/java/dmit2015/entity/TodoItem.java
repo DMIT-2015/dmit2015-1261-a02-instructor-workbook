@@ -23,6 +23,11 @@ public class TodoItem implements Serializable {
     @Column(nullable = false, length = 64)
     private String task;
 
+
+    @NotBlank(message = "Username cannot be blank.")
+    @Column(nullable = false, length = 100)
+    private String username;
+
     private boolean done;
 
     @Version

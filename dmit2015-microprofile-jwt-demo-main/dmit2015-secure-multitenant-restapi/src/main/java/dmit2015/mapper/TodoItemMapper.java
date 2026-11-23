@@ -18,6 +18,7 @@ public interface TodoItemMapper {
         @Mapping(target = "name", source = "task"),
         @Mapping(target = "complete", source = "done"),
         @Mapping(target = "version", source = "version"),
+         @Mapping(target= "username", source = "username")  ,
     })
     TodoItemDto toDto(TodoItem entity);
 
@@ -26,6 +27,7 @@ public interface TodoItemMapper {
         @Mapping(target = "task", source = "name"),
         @Mapping(target = "done", source = "complete"),
         @Mapping(target = "version", source = "version"),
+            @Mapping(target= "username", source = "username")  ,
     })
     TodoItem toEntity(TodoItemDto dto);
 

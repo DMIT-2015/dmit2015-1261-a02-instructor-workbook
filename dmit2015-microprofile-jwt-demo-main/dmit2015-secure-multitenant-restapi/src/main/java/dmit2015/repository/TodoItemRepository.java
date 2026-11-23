@@ -98,4 +98,13 @@ public class TodoItemRepository {
         entityManager.createQuery("DELETE FROM TodoItem").executeUpdate();
     }
 
+    public List<TodoItem> findAllByUsername(String username) {
+        return entityManager.createQuery(
+                        "SELECT o FROM TodoItem o WHERE o.username = :username",
+                        TodoItem.class
+                )
+                .setParameter("username", username)
+                .getResultList();
+    }
+
 }

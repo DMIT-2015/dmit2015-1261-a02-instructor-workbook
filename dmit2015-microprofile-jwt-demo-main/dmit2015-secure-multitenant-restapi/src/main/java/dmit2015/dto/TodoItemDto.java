@@ -21,4 +21,6 @@ public class TodoItemDto implements Serializable {
 
     private Integer version;
 
+    private String username;
+
 }
