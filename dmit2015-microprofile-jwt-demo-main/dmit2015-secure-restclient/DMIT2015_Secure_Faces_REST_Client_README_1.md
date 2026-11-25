@@ -76,39 +76,6 @@ Our application consists of four components:
 | Secure RBAC REST API | Enforces role-based access to Student records |
 | Secure Multi-Tenant REST API | Enforces role-based access and TodoItem ownership |
 
-The authentication and REST request workflow is:
-
-```text
-                  User
-                    |
-                    v
-           Jakarta Faces Client
-                    |
-             Login credentials
-                    |
-                    v
-                 Keycloak
-                    |
-              JWT access token
-                    |
-                    v
-           Jakarta Faces Client
-              (Login Session)
-                    |
-          Authorization: Bearer JWT
-                    |
-          +---------+---------+
-          |                   |
-          v                   v
-     Secure RBAC        Secure Multi-Tenant
-       REST API              REST API
-     (Students)            (TodoItems)
-          |                   |
-          v                   v
-    Role validation     Role and ownership
-                            validation
-```
-
 Keycloak is responsible for authentication and issuing tokens.
 
 The REST APIs remain responsible for enforcing authorization.
@@ -191,29 +158,9 @@ Do not replace the starter project with the  completed project.
 
 The Lesson 29 and Lesson 30 projects will continue to provide our secured backend REST APIs.
 
-## 7. Explore the Existing Starter Project
-
-The starter project already contains a Jakarta Faces application that communicates with the Student and TodoItem REST APIs.
 
 
-### Existing Components
-
-| Component | Purpose |
-|---|---|
-| `Student.java` | Represents Student data returned by the REST API |
-| `TodoItemDto.java` | Represents TodoItem data returned by the REST API |
-| `StudentMpRestClient.java` | Communicates with the Student REST API |
-| `TodoItemDtoMpRestClient.java` | Communicates with the TodoItem REST API |
-| `service` package | Provides service methods for the managed beans |
-| `StudentCrudView.java` | Manages Student CRUD operations |
-| `TodoItemDtoCrudView.java` | Manages TodoItem CRUD operations |
-| `manage-students.xhtml` | Displays and manages Student records |
-| `manage-todos.xhtml` | Displays and manages TodoItem records |
-| `layout.xhtml` | Provides the shared application layout and navigation |
-
-We will preserve these existing components and extend them to support authentication.
-
-## 8. Review the Existing REST Client Workflow
+## 7. Review the Existing REST Client Workflow
 
 Before adding security, review how the application communicates with the REST APIs.
 
@@ -260,15 +207,6 @@ Open the Keycloak Administration Console:
 http://localhost:8180
 ```
 
-Verify that:
-
-- Your existing realm is available.
-- Your JWT client is available.
-- Your existing users are available.
-- The Sales, Shipping, and Administration roles are configured.
-- Users have the appropriate roles.
-- The client supports the direct access grant used in our earlier lessons.
-
 If you configured Active Directory user federation in previous lessons, verify that the connection is still working.
 
 We will reuse the Keycloak configuration from Lessons 29 and 30.
@@ -310,8 +248,6 @@ http://localhost:8090/restapi/students
 
 Keep the server running.
 
-Because this API is secured, opening the URL directly in a browser may result in an access denied response.
-
 ## 12. Start the Secure Multi-Tenant REST API
 
 Open a separate terminal in:
@@ -333,12 +269,6 @@ http://localhost:8091/restapi/todos
 ```
 
 Keep the server running.
-
-Before proceeding to the final client tests, verify that both REST APIs accept valid JWT access tokens using the HTTP Client requests from Lessons 29 and 30.
-
-If a valid authenticated request returns `401 Unauthorized`, resolve the authentication issue before testing the Faces client.
-
-If WildFly reports a port conflict, verify that the HTTP, management, and debugging ports do not conflict between the running applications.
 
 ## 13. Configure MicroProfile Config Properties
 
