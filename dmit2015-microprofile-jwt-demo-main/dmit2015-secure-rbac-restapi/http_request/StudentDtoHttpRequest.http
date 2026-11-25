@@ -1,6 +1,7 @@
 ### Create a new entity
 POST http://localhost:8090/restapi/students
 Content-Type: application/json
+Authorization: Bearer {{user1AccessToken}}
 
 {
   "firstName": "Cody",

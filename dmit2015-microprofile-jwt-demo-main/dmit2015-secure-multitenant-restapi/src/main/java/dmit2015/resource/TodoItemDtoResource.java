@@ -5,6 +5,7 @@ import dmit2015.dto.TodoItemDto;
 import dmit2015.mapper.TodoItemMapper;
 import dmit2015.entity.TodoItem;
 import dmit2015.repository.TodoItemRepository;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.persistence.OptimisticLockException;
@@ -41,6 +42,8 @@ public class TodoItemDtoResource {
     @Inject
     private TodoItemRepository todoItemRepository;
 
+
+    @RolesAllowed({"Sales", "Shipping"})
     @POST   // POST: restapi/TodoItemsDto
     public Response postTodoItem(TodoItemDto dto) {
         if (dto == null) {
@@ -54,12 +57,14 @@ public class TodoItemDtoResource {
 
 //        TodoItem newTodoItem = mapFromDto(dto);
         TodoItem newTodoItem = TodoItemMapper.INSTANCE.toEntity(dto);
+        newTodoItem.setUsername(getAuthenticatedUsername());
         todoItemRepository.add(newTodoItem);
 
         URI todoItemsUri = uriInfo.getAbsolutePathBuilder().path(newTodoItem.getId().toString()).build();
         return Response.created(todoItemsUri).build();
     }
 
+    @RolesAllowed({"Sales","Shipping", "Administration"})
     @GET    // GET: restapi/TodoItemsDto/5
     @Path("{id}")
     public Response getTodoItem(@PathParam("id") Long id) {
@@ -70,21 +75,32 @@ public class TodoItemDtoResource {
         }
         TodoItem existingTodoItem = optionalTodoItem.get();
 //        TodoItemDto dto = mapToDto(existingTodoItem);
+
+        checkReadAccess(existingTodoItem);
         TodoItemDto dto = TodoItemMapper.INSTANCE.toDto(existingTodoItem);
 
         return Response.ok(dto).build();
     }
 
+    @RolesAllowed({"Sales","Shipping", "Administration"})
     @GET    // GET: restapi/TodoItemsDto
     public Response getTodoItems() {
-        return Response.ok(todoItemRepository.findAll()
-                .stream()
-//                .map(this::mapToDto)
-                .map(TodoItemMapper.INSTANCE::toDto)
-                .collect(Collectors.toList()))
-                .build();
+        boolean isAdministration =
+                jwt.getGroups().contains("Administration");
+
+        var todoItems = isAdministration
+                ? todoItemRepository.findAll()
+                : todoItemRepository.findAllByUsername(
+                getAuthenticatedUsername());
+
+        return Response.ok(
+                todoItems.stream()
+                        .map(TodoItemMapper.INSTANCE::toDto)
+                        .collect(Collectors.toList())
+        ).build();
     }
 
+    @RolesAllowed({"Sales","Shipping"})
     @PUT    // PUT: restapi/TodoItemsDto/5
     @Path("{id}")
     public Response updateTodoItem(@PathParam("id") Long id, TodoItemDto dto) {
@@ -105,6 +121,7 @@ public class TodoItemDtoResource {
         }
 
         TodoItem existingTodoItem = optionalTodoItem.orElseThrow();
+        checkOwnership(existingTodoItem);
 
         if (!Objects.equals(existingTodoItem.getVersion(), dto.getVersion())) {
             throw new ClientErrorException(
@@ -133,11 +150,13 @@ public class TodoItemDtoResource {
         }
 //        todoItemRepository.update(mapFromDto(dto));
 
-        return Response
-                .ok(dto)
-                .build();
+        return Response.ok(
+                TodoItemMapper.INSTANCE.toDto(existingTodoItem)
+        ).build();
     }
 
+
+    @RolesAllowed({"Sales", "Shipping"})
     @DELETE // DELETE: restapi/TodoItemsDto/5
     @Path("{id}")
     public Response deleteTodoItem(@PathParam("id") Long id) {
@@ -147,6 +166,8 @@ public class TodoItemDtoResource {
             throw new NotFoundException();
         }
 
+        TodoItem existingTodoItem = optionalTodoItem.get();
+        checkOwnership(existingTodoItem);
         todoItemRepository.deleteById(id);
 
         return Response.noContent().build();
@@ -166,10 +187,12 @@ public class TodoItemDtoResource {
     }
 
 
-    private void checkOwnership(TodoItem todoItem){
-        String username= getAuthenticatedUsername();
-        if(!username.equals(todoItem.getUsername())){
-            throw new ForbiddenException("you cannot access others data");
+    private void checkOwnership(TodoItem todoItem) {
+        String username = getAuthenticatedUsername();
+
+        if (!username.equals(todoItem.getUsername())) {
+            throw new ForbiddenException(
+                    "You cannot access another user's TodoItem.");
         }
     }
     private void checkReadAccess(TodoItem todoItem) {

@@ -12,6 +12,12 @@ Content-Type: application/x-www-form-urlencoded
 
 grant_type=password&client_id={{jwtClientId}}&client_secret={{jwtClientSecret}}&username={{user2Name}}&password={{user2Password}}&scope=openid
 
+### Obtain a JWT access token from Keycloak
+POST {{keycloakServer}}/realms/{{realm}}/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+grant_type=password&client_id={{jwtClientId}}&client_secret={{jwtClientSecret}}&username={{user3Name}}&password={{user3Password}}&scope=openid
+
 
 ### Retrieve information about the authenticated user
 GET {{keycloakServer}}/realms/{{realm}}/protocol/openid-connect/userinfo
