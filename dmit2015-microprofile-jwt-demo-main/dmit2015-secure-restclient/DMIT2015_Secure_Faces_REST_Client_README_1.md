@@ -160,38 +160,7 @@ The Lesson 29 and Lesson 30 projects will continue to provide our secured backen
 
 
 
-## 7. Review the Existing REST Client Workflow
-
-Before adding security, review how the application communicates with the REST APIs.
-
-For example, when a user opens the Manage TodoItems page:
-
-```text
-manage-todos.xhtml
-        |
-        v
-TodoItemDtoCrudView
-        |
-        v
-TodoItemDtoService
-        |
-        v
-MpRestClientTodoItemDtoService
-        |
-        v
-TodoItemDtoMpRestClient
-        |
-        v
-TodoItem REST API
-```
-
-The existing application already supports REST API communication.
-
-However, the REST client does not yet automatically include a JWT access token when sending requests.
-
-Since our backend REST APIs are now secured, we need to extend the existing REST client to support authenticated requests.
-
-## 9. Start Keycloak
+## 7. Start Keycloak
 
 Make sure your existing Keycloak container is running.
 
@@ -213,7 +182,7 @@ We will reuse the Keycloak configuration from Lessons 29 and 30.
 
 There is no need to create another realm or duplicate the existing users.
 
-## 10. Verify the Required Application Ports
+## 8. Verify the Required Application Ports
 
 Our application uses four different services.
 
@@ -226,7 +195,7 @@ Our application uses four different services.
 
 Each application must use a different HTTP port to avoid conflicts.
 
-## 11. Start the Secure RBAC REST API
+## 9. Start the Secure RBAC REST API
 
 Open a terminal in:
 
@@ -248,7 +217,7 @@ http://localhost:8090/restapi/students
 
 Keep the server running.
 
-## 12. Start the Secure Multi-Tenant REST API
+## 10. Start the Secure Multi-Tenant REST API
 
 Open a separate terminal in:
 
@@ -270,7 +239,7 @@ http://localhost:8091/restapi/todos
 
 Keep the server running.
 
-## 13. Configure MicroProfile Config Properties
+## 11. Configure MicroProfile Config Properties
 
 In the Lesson 31 project, open:
 
@@ -325,7 +294,7 @@ In the Keycloak Administration Console:
 
 In README 2, we will create a MicroProfile REST Client interface that communicates with this endpoint.
 
-## 14. Review the Implementation Plan
+## 12. Review the Implementation Plan
 
 In README 2, we will implement the following components.
 
@@ -372,7 +341,7 @@ We will follow the second approach using `AuthHeaderFactory.java`.
 
 This avoids modifying every REST client method to accept an additional parameter.
 
-## 16. Connection to Assignment 7
+## 13. Connection to Assignment 7
 
 Assignment 7 requires a secure Jakarta Faces REST Client that communicates with secured Bill REST APIs.
 
