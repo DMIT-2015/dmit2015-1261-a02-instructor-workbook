@@ -1,0 +1,59 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ui="jakarta.faces.facelets"
+        xmlns:h="jakarta.faces.html"
+        xmlns:p="primefaces"
+        template="/WEB-INF/faces-templates/layout.xhtml">
+
+    <ui:param name="title" value="Login"/>
+
+    <ui:define name="maincontent">
+
+        <h:panelGroup
+                rendered="#{loginSession.authenticated}">
+
+            <h:outputText
+                    value="Logged in as #{loginSession.username}"/>
+
+        </h:panelGroup>
+
+        <h:form id="loginForm"
+                rendered="#{not loginSession.authenticated}">
+
+            <h1>Login</h1>
+
+            <div class="field">
+
+                <p:outputLabel for="username"
+                               value="Username"/>
+
+                <p:inputText id="username"
+                             value="#{keycloakLogin.username}"
+                             required="true"
+                             styleClass="inputfield w-full"/>
+
+            </div>
+
+            <div class="field">
+
+                <p:outputLabel for="password"
+                               value="Password"/>
+
+                <p:password id="password"
+                            value="#{keycloakLogin.password}"
+                            required="true"
+                            styleClass="inputfield w-full"/>
+
+            </div>
+
+            <p:commandButton
+                    value="Login"
+                    icon="pi pi-sign-in"
+                    action="#{keycloakLogin.submit}"
+                    ajax="false"/>
+
+        </h:form>
+
+    </ui:define>
+
+</ui:composition>
