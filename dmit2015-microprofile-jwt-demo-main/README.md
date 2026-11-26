@@ -1,6 +1,6 @@
 # DMIT2015 MicroProfile JWT Demo
 
-## Purpose
+## Purposes
 
 This repository contains three instructor demonstration projects for securing Jakarta REST APIs with **MicroProfile JWT** and calling secured APIs from a **Jakarta Faces REST client**.
 
