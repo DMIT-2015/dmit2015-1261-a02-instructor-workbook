@@ -4,6 +4,7 @@ import dmit2015.model.TodoItemDto;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.rest.client.annotation.RegisterClientHeaders;
 import org.eclipse.microprofile.rest.client.annotation.RegisterProvider;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
@@ -42,6 +43,9 @@ import java.util.Optional;
  */
 @RequestScoped
 @RegisterProvider(TodoItemRestApiResponseMapper.class)
+@RegisterClientHeaders(AuthHeaderFactory.class)
+@RegisterProvider(ForbiddenResponseMapper.class)
+@RegisterProvider(UnauthorizedResponseMapper.class)
 @RegisterRestClient  // baseUri is defined in `src/resources/META-INF/microprofile-config.properties
 public interface TodoItemDtoMpRestClient {
 

@@ -45,6 +45,18 @@
                             <p:menuitem value="Home" icon="pi pi-home" outcome="/index"/>
 <p:menuitem value="Faces TodoItem REST Client" outcome="/todo/manage-todos" />
 <p:menuitem value="Student REST Client" outcome="/student/manage-students" />
+                            <p:menuitem
+                                    value="Login"
+                                    icon="pi pi-sign-in"
+                                    outcome="/login"
+                                    rendered="#{not loginSession.authenticated}"/>
+
+                            <p:menuitem
+                                    value="Logout (#{loginSession.username})"
+                                    icon="pi pi-sign-out"
+                                    action="#{keycloakLogout.submit}"
+                                    ajax="false"
+                                    rendered="#{loginSession.authenticated}"/>
                             <!-- Example submenu scaffold
                             <p:submenu label="Students" icon="pi pi-users">
                               <p:menuitem value="List" icon="pi pi-list" outcome="/students/index"/>

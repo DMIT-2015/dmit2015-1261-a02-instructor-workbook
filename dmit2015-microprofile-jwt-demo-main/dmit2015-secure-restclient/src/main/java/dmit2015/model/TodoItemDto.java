@@ -12,6 +12,7 @@ public class TodoItemDto {
 
     private Long id;
 
+    private String username;
     private String name;
 
     private boolean complete;

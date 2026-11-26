@@ -6,9 +6,11 @@ import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+import jakarta.ws.rs.WebApplicationException;
 import lombok.Getter;
 import lombok.Setter;
 import net.datafaker.Faker;
+import org.omnifaces.util.Faces;
 import org.omnifaces.util.Messages;
 import org.primefaces.PrimeFaces;
 
@@ -60,11 +62,28 @@ public class TodoItemDtoCrudView implements Serializable {
      * <f:event type="postInvokeAction" listener="#{currentBeanView.init}" />
      * </f:metadata>
      */
-    @PostConstruct
+
+    @Inject
+    private LoginSession loginSession;
+
+
     public void init() {
+
+        if (Faces.isPostback()
+                || Faces.getContext().getResponseComplete()) {
+            return;
+        }
+
+        if (loginSession.getAuthorization() == null) {
+            Faces.redirect("login.xhtml");
+            return;
+        }
         try {
             todoItemDtos = todoItemDtoService.getAllTodoItemDtos();
         } catch (Exception e) {
+            if (handleUnauthorized(e)) {
+                return;
+            }
             Messages.addGlobalError("Error getting todoItemDtos %s", e.getMessage());
         }
     }
@@ -126,9 +145,15 @@ public class TodoItemDtoCrudView implements Serializable {
 
             // Hide the PrimeFaces dialog
             PrimeFaces.current().executeScript("PF('manageTodoItemDtoDialog').hide()");
-        } catch (RuntimeException ex) { // handle application generated exceptions
+        } catch (RuntimeException ex) {
+            if (handleUnauthorized(ex)) {
+                return;
+            }// handle application generated exceptions
             Messages.addGlobalError(ex.getMessage());
-        } catch (Exception ex) {    // handle system generated exceptions
+        } catch (Exception ex) {
+            if (handleUnauthorized(ex)) {
+                return;
+            }// handle system generated exceptions
             Messages.addGlobalError("Save not successful.");
             handleException(ex);
         }
@@ -148,9 +173,15 @@ public class TodoItemDtoCrudView implements Serializable {
             todoItemDtos = todoItemDtoService.getAllTodoItemDtos();
 
             PrimeFaces.current().ajax().update("dialogs:messages", "form:dt-TodoItemDtos");
-        } catch (RuntimeException ex) { // handle application generated exceptions
+        } catch (RuntimeException ex) {
+            if (handleUnauthorized(ex)) {
+                return;
+            }// handle application generated exceptions
             Messages.addGlobalError(ex.getMessage());
-        } catch (Exception ex) {    // handle system generated exceptions
+        } catch (Exception ex) {
+            if (handleUnauthorized(ex)) {
+                return;
+            }// handle system generated exceptions
             Messages.addGlobalError("Delete not successful.");
             handleException(ex);
         }
@@ -172,6 +203,28 @@ public class TodoItemDtoCrudView implements Serializable {
             causes = causes.getCause();
         }
         Messages.create(ex.getMessage()).detail(details.toString()).error().add("errors");
+    }
+
+    private boolean handleUnauthorized(Exception ex) {
+
+        Throwable cause = ex;
+
+        while (cause != null) {
+
+            if (cause instanceof WebApplicationException webEx
+                    && webEx.getResponse().getStatus() == 401) {
+
+                loginSession.clear();
+
+                Faces.redirect("login.xhtml");
+
+                return true;
+            }
+
+            cause = cause.getCause();
+        }
+
+        return false;
     }
 
 }

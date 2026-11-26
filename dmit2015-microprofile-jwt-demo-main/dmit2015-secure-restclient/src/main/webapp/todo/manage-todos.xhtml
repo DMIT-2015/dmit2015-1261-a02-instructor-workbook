@@ -15,6 +15,19 @@
 >
 
     <ui:param name="title" value="TodoItemDto - CRUD"/>
+    <f:metadata>
+
+        <f:viewParam name="dummy"/>
+
+        <f:viewAction
+                action="#{loginSession.checkForToken}"
+                onPostback="true"/>
+
+        <f:event
+                type="postInvokeAction"
+                listener="#{currentTodoItemDtoCrudView.init}"/>
+
+    </f:metadata>
 
     <ui:param name="internalstyles" value=".TodoItemDtos-table-header { display: flex; align-items:center; justify-content: space-between; flex-wrap: wrap; }" />
 
@@ -68,6 +81,13 @@
                     </p:column>
                     <p:column headerText="Version">
                         <h:outputText value="#{currentItem.version}" />
+                    </p:column>
+
+                    <p:column headerText="Username"
+                              sortBy="#{currentItem.username}">
+
+                        <h:outputText value="#{currentItem.username}"/>
+
                     </p:column>
 
                     <p:column exportable="false" ariaHeaderText="Actions">

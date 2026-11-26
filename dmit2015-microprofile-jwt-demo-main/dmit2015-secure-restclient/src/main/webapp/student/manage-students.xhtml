@@ -15,6 +15,21 @@
 >
 
     <ui:param name="title" value="Student - CRUD"/>
+    <f:metadata>
+
+        <f:viewParam name="dummy"/>
+
+        <f:viewAction
+                action="#{loginSession.checkForToken}"
+                onPostback="true"/>
+
+        <f:event
+                type="postInvokeAction"
+                listener="#{currentStudentCrudView.init}"/>
+
+    </f:metadata>
+
+
 
     <ui:param name="internalstyles"
               value=".Students-table-header { display: flex; align-items:center; justify-content: space-between; flex-wrap: wrap; }"/>
